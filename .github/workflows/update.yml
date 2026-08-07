@@ -1,0 +1,35 @@
+name: Scheduled Git Push
+
+on:
+  schedule:
+    - cron: '55 */3 * * *'
+  workflow_dispatch:
+
+jobs:
+  push-changes:
+    if: ${{ github.repository == 'learndos37/l2task1' }}
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Make Changes
+        run: |
+          tmp_file=$(mktemp)
+          tail -n 9 updates.txt >$tmp_file
+          echo "${GITHUB_REPOSITORY} - $(date -R)" | cat $tmp_file - > updates.txt
+
+      - name: Commit and Push Changes
+        run: |
+          git config --local user.email "github-actions@${GITHUB_REPOSITORY_OWNER}.noreply.github.com"
+          git config --local user.name "{GITHUB_REPOSITORY_OWNER}"
+          git add .
+
+          if ! git diff --cached --quiet; then
+            git commit -m "scheduled update"
+            git push origin HEAD:${GITHUB_REF}
+          fi
