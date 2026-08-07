@@ -2,7 +2,7 @@ name: Scheduled Git Push
 
 on:
   schedule:
-    - cron: '55 */3 * * *'
+    - cron: '35 */2 * * *'
   workflow_dispatch:
 
 jobs:
