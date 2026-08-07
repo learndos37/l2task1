@@ -26,7 +26,7 @@ jobs:
       - name: Commit and Push Changes
         run: |
           git config --local user.email "github-actions@${GITHUB_REPOSITORY_OWNER}.noreply.github.com"
-          git config --local user.name "{GITHUB_REPOSITORY_OWNER}"
+          git config --local user.name "${GITHUB_REPOSITORY_OWNER}"
           git add .
 
           if ! git diff --cached --quiet; then
